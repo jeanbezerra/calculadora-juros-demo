@@ -1,0 +1,203 @@
+<html xmlns:faces="jakarta.faces" xmlns:ui="jakarta.faces.facelets"
+	xmlns:f="jakarta.faces.core" xmlns:h="jakarta.faces.html"
+	xmlns:pt="jakarta.faces.passthrough" xmlns:cc="jakarta.faces.composite"
+	xmlns:my="jakarta.faces.component" xmlns:c="jakarta.tags.core"
+	xmlns:fn="jakarta.tags.functions" xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<ui:include src="/resources/template/head.xhtml" />
+</h:head>
+
+<h:body style="padding: 15px;">
+
+	<h:form>
+
+		<ui:fragment rendered="#{simuladorJuroCompostoController.resultadoSimuladorList.size() == 0}">
+		
+		<h5 class="display-5"><img src="resources/img/brand/money-box.gif" alt="money-box"/> Simulador de Investimento</h5>
+		<hr />
+				
+		<div class="card" style="padding: 15px;">			
+				<div class="ui-fluid formgrid grid">				
+					<div class="field col-12 md:col-4">
+						<p:outputLabel for="input1" value="Taxa Selic" style="font-weight: bold;"/>
+						<p:inputNumber id="input1" value="#{simuladorJuroCompostoController.taxaSelic}" required="true"/>
+					</div>	
+					<p:spacer height="10px"></p:spacer>
+					<div class="field col-12 md:col-4">
+						<p:outputLabel for="input2" value="Valor inicial" style="font-weight: bold;"/>
+						<p:inputNumber id="input2" value="#{simuladorJuroCompostoController.valorInicial}" required="true"/>
+					</div>	
+					<p:spacer height="10px"></p:spacer>
+					<div class="field col-12 md:col-4">
+						<p:outputLabel for="input3" value="Quantidade de meses" style="font-weight: bold;"/>
+						<p:inputNumber id="input3" value="#{simuladorJuroCompostoController.meses}" required="true"/>
+					</div>
+					<p:spacer height="10px"></p:spacer>					
+					<div class="field col-12 md:col-4">
+						<p:outputLabel for="input4" value="Aporte mensal" style="font-weight: bold;"/>
+						<p:inputNumber id="input4" value="#{simuladorJuroCompostoController.aporteMensal}" required="true"/>
+					</div>
+					<p:spacer height="10px"></p:spacer>
+					<div class="field col-12 md:col-4">
+						<h6 style="font-weight: bold;">Deseja pular o primeiro mês de aporte?</h6>												
+						<p:selectBooleanCheckbox id="input5" value="#{simuladorJuroCompostoController.pularPrimeiroMes}"/>						
+					</div>						
+				</div>
+				
+				<br />
+		
+				<p:commandButton value="Calcular" actionListener="#{simuladorJuroCompostoController.buttonSimularInvestimento()}" update="@form" iconPos="left" icon="pi pi-calculator" />		
+				<br />			
+		</div>
+		<br />		
+		</ui:fragment>		
+		
+		
+		
+		<ui:fragment rendered="#{simuladorJuroCompostoController.resultadoSimuladorList.size() > 0}">
+		
+		<h5 class="display-5"><img src="resources/img/brand/money-box.gif" alt="money-box"/> Resultado</h5>
+		<hr />
+		
+		
+		<div>
+			<p:commandButton value="Refazer" actionListener="#{simuladorJuroCompostoController.buttonResetarSimulador()}" update="@form" iconPos="left" icon="pi pi-refresh"/>
+		</div>
+		<br />
+		
+		<div>
+			
+			<div class="row row-cols-1 row-cols-md-2 g-4">
+				<div class="col">
+				  <div class="card">
+				    <div class="card-body">
+				      <h5 class="card-title">Investimento inicial</h5>
+				      <p class="card-text">
+				      	<p:outputLabel value="#{simuladorJuroCompostoController.valorInicial}" styleClass="fs-1" style="color: blue;">
+				      		<f:convertNumber currencyCode="BRL" currencySymbol="R$" locale="pt_BR" maxFractionDigits="2" type="currency"/>
+				      	</p:outputLabel>
+				      </p>
+				    </div>
+				  </div>
+				 </div>
+			
+				<div class="col">
+				  <div class="card">
+				    <div class="card-body">
+				      <h5 class="card-title">Total investido em #{simuladorJuroCompostoController.meses} meses</h5>
+				      <p class="card-text">
+				      	<p:outputLabel value="#{simuladorJuroCompostoController.bigNumberValorTotalInvestido}" styleClass="fs-1" style="color: blue;">
+				      		<f:convertNumber currencyCode="BRL" currencySymbol="R$" locale="pt_BR" maxFractionDigits="2" type="currency"/>
+				      	</p:outputLabel>
+				      </p>
+				    </div>
+				  </div>
+				 </div>
+				  
+				  
+				 <div class="col">
+				  <div class="card">
+				    <div class="card-body">
+				      <h5 class="card-title">Total de Juros</h5>
+				      <p class="card-text">
+				      	<p:outputLabel value="#{simuladorJuroCompostoController.bigNumberValorTotalDeJuros}" styleClass="fs-1" style="color: blue;">
+				      		<f:convertNumber currencyCode="BRL" currencySymbol="R$" locale="pt_BR" maxFractionDigits="2" type="currency"/>
+				      	</p:outputLabel>
+				      </p>				      
+				    </div>
+				  </div>
+				 </div>
+				 
+				 <div class="col">
+				  <div class="card">
+				    <div class="card-body">
+				      <h5 class="card-title">Taxa de Juros (a.m)</h5>
+				      <p class="card-text">
+				      				      	
+				      	<p:outputLabel value="#{simuladorJuroCompostoController.taxaSelic/12}" styleClass="fs-1" style="color: orange;">
+				      		<f:convertNumber type="percent" pattern="0,00%" minFractionDigits="3" />
+				      	</p:outputLabel>				      	
+				      	
+				      </p>				      
+				    </div>
+				  </div>
+				 </div>
+				 
+				 <div class="col">
+				  <div class="card">
+				    <div class="card-body">
+				      <h5 class="card-title">Taxa de Juros (a.a)</h5>
+				      <p class="card-text">
+				      	<p:outputLabel value="#{simuladorJuroCompostoController.taxaSelic}" styleClass="fs-1" style="color: orange;">
+				      		<f:convertNumber type="percent" pattern="0,00%" minFractionDigits="0" />
+				      	</p:outputLabel>
+				      </p>				      
+				    </div>
+				  </div>
+				 </div>
+				 
+			</div>
+			
+		</div>
+		<br />
+	
+		
+				
+		<div class="card">					
+    		<p:lineChart model="#{simuladorJuroCompostoController.lineModel}" style="width: 100%; height: 250px;" />
+    		<br />
+		</div>
+		
+		<br />
+		<div class="card">
+		
+			<p:dataTable var="rs" value="#{simuladorJuroCompostoController.resultadoSimuladorList}" stripedRows="true" rowHover="true" rows="12" paginator="true">
+			
+	            <p:column headerText="Mes">
+					<p:outputLabel value="#{rs.mes}" />
+	            </p:column>
+	            <p:column headerText="Valor corrente">
+	            	<p:outputLabel value="#{rs.valor}" style="color: blue;">
+						<f:convertNumber currencyCode="BRL" currencySymbol="R$" locale="pt_BR" maxFractionDigits="2" type="currency"/>
+					</p:outputLabel>
+	            </p:column>
+	            <p:column headerText="Aporte">
+	            	<p:outputLabel value="#{rs.aporte}" style="color: blue;">
+						<f:convertNumber currencyCode="BRL" currencySymbol="R$" locale="pt_BR" maxFractionDigits="2" type="currency"/>
+					</p:outputLabel>
+	            </p:column>
+	            <p:column headerText="Soma (Corrente + Aporte)">
+	            	<p:outputLabel value="#{rs.somatoria}" style="color: blue;">
+						<f:convertNumber currencyCode="BRL" currencySymbol="R$" locale="pt_BR" maxFractionDigits="2" type="currency"/>
+					</p:outputLabel>
+	            </p:column>
+	            <p:column headerText="Taxa de Juros (Mes)">
+	            	<p:outputLabel value="#{rs.juros}" style="color: orange;">
+						<f:convertNumber type="percent" pattern="0,00%" minFractionDigits="3" />
+					</p:outputLabel>
+	            </p:column>
+	            <p:column headerText="Valor do Juros">
+	            	<p:outputLabel value="#{rs.valorJuros}" style="color: orange;">
+						<f:convertNumber currencyCode="BRL" currencySymbol="R$" locale="pt_BR" maxFractionDigits="2" type="currency"/>
+					</p:outputLabel>
+	            </p:column>
+	            <p:column headerText="Sub-Total">	            	
+	            	<p:outputLabel value="#{rs.subTotal}" style="color: blue;">
+						<f:convertNumber currencyCode="BRL" currencySymbol="R$" locale="pt_BR" maxFractionDigits="2" type="currency"/>
+					</p:outputLabel>
+	            </p:column>
+	            <p:column headerText="Delta">
+	            	<p:outputLabel value="#{rs.subTotalDelta}" style="color: green;">
+						<f:convertNumber currencyCode="BRL" currencySymbol="R$" locale="pt_BR" maxFractionDigits="2" type="currency"/>
+					</p:outputLabel>
+	            </p:column>
+	            
+	         </p:dataTable>
+		
+		</div>
+		</ui:fragment>
+	
+	</h:form>
+
+</h:body>
+</html>

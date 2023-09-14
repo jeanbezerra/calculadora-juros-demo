@@ -1,0 +1,104 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.jeanbezerra</groupId>
+	<artifactId>calculadora-juros-demo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<properties>
+		<java.version>17</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<project.build.sourceEncondig>UTF-8</project.build.sourceEncondig>
+		<project.reporting.outputEncondig>UTF-8</project.reporting.outputEncondig>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+
+		<!-- SonarQube -->
+		<sonar.host.url>http://localhost:9000</sonar.host.url>
+		<sonar.projectKey>${project.groupId}:${project.artifactId}</sonar.projectKey>
+		<sonar.projectName>${project.name}</sonar.projectName>
+		<sonar.projectVersion>${project.version}</sonar.projectVersion>
+		<sonar.login>sqa_e7f7e21223668a3ac0ac49cbe54ec3772bfb1779</sonar.login>
+		<sonar.ws.timeout>300</sonar.ws.timeout>
+		<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
+	</properties>
+
+	<dependencies>
+
+		<!-- Jakarta EE 10 -->
+		<dependency>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+			<version>10.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+
+		<!-- CDI -->
+		<dependency>
+			<groupId>jakarta.enterprise</groupId>
+			<artifactId>jakarta.enterprise.cdi-api</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.weld.servlet</groupId>
+			<artifactId>weld-servlet-shaded</artifactId>
+			<version>5.1.1.Final</version>
+		</dependency>
+
+
+		<!-- JSF -->
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>jakarta.faces</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+
+		<!-- Primefaces 12 -->
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>13.0.0</version>
+			<classifier>jakarta</classifier>
+		</dependency>
+
+		<!-- Apache Math -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math3</artifactId>
+			<version>3.6.1</version>
+		</dependency>
+
+
+	</dependencies>
+
+	<build>
+		<finalName>portal</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.2.2</version>
+				<configuration>
+					<warName>portal</warName>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
