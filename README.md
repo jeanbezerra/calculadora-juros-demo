@@ -1,6 +1,6 @@
 # calculadora-juros-demo
 
-## Tecnologias utilizada neste projeto
+## Tecnologias utilizadas neste projeto
 
 | #    | Nome             | Descrição  | Versão   | Link     |
 |---   |---               |---         |---       |---       |
